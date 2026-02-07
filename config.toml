@@ -1,0 +1,10 @@
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "Verses and Visions"
+
+[params]
+  tagline = "poems for the space between waking and sleep"
+  authorline = "est. 2026 - words written under moonlight"
+
+[taxonomies]
+  category = "categories"

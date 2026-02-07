@@ -1,0 +1,36 @@
+{{ define "main" }}
+  {{ if eq .Section "poems" }}
+    <article class="poem-page {{ if .Params.hero_image }}has-hero{{ end }}">
+      <a href="{{ "/" | relURL }}" class="back-link">back to poems</a>
+      <div class="poem-panel">
+        {{ if .Params.hero_image }}
+          <div class="poem-hero" style="background-image: url('{{ .Params.hero_image }}');"></div>
+        {{ end }}
+        <div class="poem-inner">
+          <div class="poem-meta">
+            <span>
+            {{ $cat := "" }}
+            {{ with .Params.categories }}{{ $cat = index . 0 }}{{ else }}{{ with .Params.category }}{{ $cat = . }}{{ end }}{{ end }}
+            {{ $cat }}
+            </span>
+            <time>{{ .Date.Format "2 January 2006" }}</time>
+          </div>
+          <h1>{{ .Title }}</h1>
+          {{ with .Params.epigraph }}
+            <p class="epigraph">{{ . }}</p>
+          {{ end }}
+          <p class="ornament">*</p>
+          <div class="poem-content">
+            {{ .Content }}
+          </div>
+          <p class="ornament end">*</p>
+        </div>
+      </div>
+    </article>
+  {{ else }}
+    <article class="page-content">
+      <h1>{{ .Title }}</h1>
+      {{ .Content }}
+    </article>
+  {{ end }}
+{{ end }}

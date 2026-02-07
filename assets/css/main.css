@@ -1,0 +1,427 @@
+:root {
+  --void: #060a18;
+  --deep: #0a1025;
+  --night: #0f1a35;
+  --navy: #162040;
+  --slate: #1e2d55;
+  --silver: #8090b8;
+  --moonlight: #b8c4e0;
+  --stardust: #d0d8f0;
+  --ghost: #e0e4f0;
+  --gold: #c9a84c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  background: linear-gradient(180deg, var(--void) 0%, var(--deep) 30%, var(--night) 60%, var(--navy) 100%);
+  color: var(--stardust);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.starfield {
+  position: fixed;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.moon {
+  position: fixed;
+  top: 60px;
+  right: 12%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0.78;
+  background:
+    radial-gradient(circle at 26% 28%, rgba(80, 78, 70, 0.10) 0 8px, transparent 9px),
+    radial-gradient(circle at 56% 62%, rgba(70, 68, 62, 0.08) 0 11px, transparent 12px),
+    radial-gradient(circle at 68% 34%, rgba(70, 68, 62, 0.07) 0 6px, transparent 7px),
+    radial-gradient(circle at 35% 35%, #e8e4d4, #c8c0a8 50%, #a8a088 100%);
+  box-shadow: 0 0 40px rgba(200, 195, 170, 0.2), 0 0 100px rgba(200, 195, 170, 0.08), 0 0 160px rgba(200, 195, 170, 0.04);
+  animation: moonFloat 20s ease-in-out infinite;
+}
+
+.wave-layer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wave-layer svg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.crest-glow {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(100, 140, 200, 0.08), transparent, rgba(100, 140, 200, 0.05), transparent);
+  filter: blur(4px);
+  animation: waveGlow 8s ease-in-out infinite;
+}
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 30%, transparent 42%, rgba(6, 10, 24, 0.55) 100%);
+}
+
+.site-shell {
+  position: relative;
+  z-index: 10;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.8rem 2rem;
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.brand {
+  font-size: clamp(1.4rem, 2.4vw, 2.6rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--silver);
+  opacity: 0.75;
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+.category-nav {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.category-nav a {
+  padding: 0.2rem 0.85rem;
+  border-bottom: 1px solid transparent;
+  color: var(--silver);
+  opacity: 0.65;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.category-nav a.active,
+.category-nav a:hover {
+  color: var(--moonlight);
+  border-bottom-color: var(--gold);
+  opacity: 1;
+}
+
+.main-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 8rem;
+}
+
+.glass-well {
+  background: rgba(10, 16, 38, 0.45);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  padding: 2.2rem 1.8rem;
+}
+
+.poem-list-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.9rem;
+}
+
+.poem-list-head h1 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1rem;
+  color: var(--moonlight);
+}
+
+.poem-list-head p {
+  margin: 0;
+  color: var(--silver);
+  opacity: 0.5;
+  font-size: 0.85rem;
+}
+
+.poem-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.poem-card {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  animation: slideUp 0.7s ease both;
+}
+
+.poem-card:hover {
+  background: rgba(80, 120, 200, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.poem-card-link {
+  display: block;
+  padding: 1.45rem 1.55rem;
+}
+
+.poem-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 0.55rem;
+}
+
+.poem-card h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.poem-card-top span {
+  color: var(--gold);
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.74rem;
+}
+
+.poem-card p {
+  margin: 0;
+  font-style: italic;
+  color: var(--moonlight);
+  opacity: 0.65;
+}
+
+.poem-card time {
+  display: block;
+  margin-top: 0.7rem;
+  color: var(--silver);
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+
+.poem-page .back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--silver);
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.82rem;
+}
+
+.poem-panel {
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(15, 22, 50, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 4px 40px rgba(0, 0, 0, 0.2);
+}
+
+.poem-hero {
+  position: relative;
+  height: 240px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.poem-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6, 10, 24, 0.15) 0%, rgba(10, 16, 38, 0.96) 86%);
+}
+
+.poem-inner {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 2.5rem;
+}
+
+.poem-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.poem-meta span {
+  color: var(--gold);
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+}
+
+.poem-meta time {
+  color: var(--silver);
+  opacity: 0.45;
+  font-size: 0.82rem;
+}
+
+.poem-inner h1 {
+  margin: 0 0 1.2rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.epigraph {
+  margin: 0 0 2rem;
+  padding-left: 1.2rem;
+  border-left: 1px solid rgba(201, 168, 76, 0.35);
+  color: var(--silver);
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.ornament {
+  text-align: center;
+  opacity: 0.5;
+  letter-spacing: 0.5em;
+  margin: 1.8rem 0;
+  color: rgba(201, 168, 76, 0.8);
+}
+
+.ornament.end {
+  margin: 2.5rem 0 0;
+}
+
+.poem-content {
+  color: var(--stardust);
+  font-size: 1.2rem;
+  line-height: 2;
+  letter-spacing: 0.01em;
+}
+
+.poem-content p {
+  margin: 0 0 1.9rem;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--silver);
+  opacity: 0.35;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+50% {
+    d: path("M0,164 C240,180 480,154 720,172 C960,182 1200,160 1440,170 L1440,220 L0,220 Z");
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .main-wrap {
+    padding: 1.2rem 0.7rem 7rem;
+  }
+
+  .glass-well {
+    padding: 1.3rem 1rem;
+    border-radius: 14px;
+  }
+
+  .poem-hero {
+    height: 180px;
+  }
+
+  .poem-inner {
+    padding: 1.3rem 1rem 1.8rem;
+  }
+}
+
+@keyframes waveGlow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes moonFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

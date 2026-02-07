@@ -1,0 +1,29 @@
+{{ define "main" }}
+  {{ $pages := .RegularPagesRecursive }}
+  {{ if and (eq .Section "poems") (eq (len $pages) 0) }}
+    {{ $pages = where .Site.RegularPages "Section" "poems" }}
+  {{ end }}
+  {{ $pages = sort $pages "Date" "desc" }}
+  <section class="poem-list-head">
+    <h1>{{ .Title }}</h1>
+    <p>{{ len $pages }} {{ if eq (len $pages) 1 }}poem{{ else }}poems{{ end }}</p>
+  </section>
+  <section class="poem-grid">
+    {{ range $idx, $poem := $pages }}
+      <article class="poem-card" style="animation-delay: {{ mul $idx 90 }}ms;">
+        <a href="{{ $poem.RelPermalink }}" class="poem-card-link">
+          <div class="poem-card-top">
+            <h2>{{ $poem.Title }}</h2>
+            <span>
+            {{ $cat := "" }}
+            {{ with $poem.Params.categories }}{{ $cat = index . 0 }}{{ else }}{{ with $poem.Params.category }}{{ $cat = . }}{{ end }}{{ end }}
+            {{ $cat }}
+            </span>
+          </div>
+          <p>{{ if $poem.Summary }}{{ $poem.Summary | plainify | truncate 150 }}{{ else }}{{ $poem.Plain | truncate 150 }}{{ end }}</p>
+          <time>{{ $poem.Date.Format "2 January 2006" }}</time>
+        </a>
+      </article>
+    {{ end }}
+  </section>
+{{ end }}

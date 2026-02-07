@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+    {{ $js := resources.Get "js/night-effects.js" | minify | fingerprint }}
+    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+  </head>
+  <body>
+    <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
+    <div class="moon" aria-hidden="true"></div>
+    <div class="wave-layer" aria-hidden="true">
+      <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGrad1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(8, 15, 40, 0)"></stop>
+            <stop offset="100%" stop-color="rgba(8, 15, 40, 0.95)"></stop>
+          </linearGradient>
+          <linearGradient id="waveGrad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(15, 25, 60, 0)"></stop>
+            <stop offset="100%" stop-color="rgba(15, 25, 60, 0.8)"></stop>
+          </linearGradient>
+          <linearGradient id="waveGrad3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(20, 35, 80, 0)"></stop>
+            <stop offset="100%" stop-color="rgba(20, 35, 80, 0.6)"></stop>
+          </linearGradient>
+        </defs>
+
+        <path fill="url(#waveGrad3)" opacity="0.5">
+          <animate
+            attributeName="d"
+            dur="12s"
+            repeatCount="indefinite"
+            values="
+              M0,140 C180,100 360,160 540,130 C720,100 900,160 1080,140 C1260,120 1380,150 1440,135 L1440,200 L0,200 Z;
+              M0,130 C180,160 360,110 540,145 C720,170 900,115 1080,135 C1260,155 1380,120 1440,140 L1440,200 L0,200 Z;
+              M0,145 C180,115 360,155 540,125 C720,110 900,155 1080,145 C1260,130 1380,155 1440,130 L1440,200 L0,200 Z;
+              M0,140 C180,100 360,160 540,130 C720,100 900,160 1080,140 C1260,120 1380,150 1440,135 L1440,200 L0,200 Z"
+            calcMode="spline"
+            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+          ></animate>
+        </path>
+
+        <path fill="url(#waveGrad2)" opacity="0.6">
+          <animate
+            attributeName="d"
+            dur="8s"
+            repeatCount="indefinite"
+            values="
+              M0,155 C200,135 400,175 600,150 C800,130 1000,170 1200,155 C1350,140 1400,165 1440,150 L1440,200 L0,200 Z;
+              M0,150 C200,170 400,135 600,160 C800,175 1000,140 1200,150 C1350,165 1400,140 1440,155 L1440,200 L0,200 Z;
+              M0,160 C200,140 400,170 600,145 C800,135 1000,165 1200,155 C1350,145 1400,170 1440,150 L1440,200 L0,200 Z;
+              M0,155 C200,135 400,175 600,150 C800,130 1000,170 1200,155 C1350,140 1400,165 1440,150 L1440,200 L0,200 Z"
+            calcMode="spline"
+            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+          ></animate>
+        </path>
+
+        <path fill="url(#waveGrad1)" opacity="0.75">
+          <animate
+            attributeName="d"
+            dur="6s"
+            repeatCount="indefinite"
+            values="
+              M0,170 C240,155 480,185 720,165 C960,150 1200,180 1440,168 L1440,200 L0,200 Z;
+              M0,165 C240,180 480,155 720,172 C960,185 1200,158 1440,170 L1440,200 L0,200 Z;
+              M0,172 C240,158 480,180 720,162 C960,155 1200,178 1440,165 L1440,200 L0,200 Z;
+              M0,170 C240,155 480,185 720,165 C960,150 1200,180 1440,168 L1440,200 L0,200 Z"
+            calcMode="spline"
+            keySplines="0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95; 0.45 0.05 0.55 0.95"
+          ></animate>
+        </path>
+
+        <rect x="0" y="185" width="1440" height="20" fill="rgba(8, 12, 30, 0.95)"></rect>
+      </svg>
+      <div class="crest-glow"></div>
+    </div>
+    <div class="vignette"></div>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <a class="brand" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+          <p class="tagline">{{ .Site.Params.tagline }}</p>
+          <nav class="category-nav">
+            <a href="{{ "/" | relURL }}" class="{{ if .IsHome }}active{{ end }}">All</a>
+            {{ $cats := .Site.Taxonomies.categories }}
+            {{ if not $cats }}{{ $cats = .Site.Taxonomies.category }}{{ end }}
+            {{ range $cats.ByCount }}
+              {{ $termPage := .Page }}
+              <a href="{{ $termPage.RelPermalink }}" class="{{ if and $.IsNode (eq $.RelPermalink $termPage.RelPermalink) }}active{{ end }}">{{ $termPage.Title }}</a>
+            {{ end }}
+          </nav>
+        </div>
+      </header>
+
+      <main class="main-wrap">
+        <div class="glass-well">
+          {{ block "main" . }}{{ end }}
+        </div>
+      </main>
+
+      <footer class="site-footer">{{ .Site.Params.authorline }}</footer>
+    </div>
+  </body>
+</html>

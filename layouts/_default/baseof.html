@@ -85,10 +85,10 @@
     <div class="site-shell">
       <header class="site-header">
         <div class="header-inner">
-          <a class="brand" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+          <a class="brand" href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a>
           <p class="tagline">{{ .Site.Params.tagline }}</p>
           <nav class="category-nav">
-            <a href="{{ "/" | relURL }}" class="{{ if .IsHome }}active{{ end }}">All</a>
+            <a href="{{ .Site.Home.RelPermalink }}" class="{{ if .IsHome }}active{{ end }}">All</a>
             {{ $cats := .Site.Taxonomies.categories }}
             {{ if not $cats }}{{ $cats = .Site.Taxonomies.category }}{{ end }}
             {{ range $cats.ByCount }}

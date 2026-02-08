@@ -87,21 +87,59 @@
         <div class="header-inner">
           <a class="brand" href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a>
           <p class="tagline">{{ .Site.Params.tagline }}</p>
-          <nav class="category-nav">
-            <a href="{{ .Site.Home.RelPermalink }}" class="{{ if .IsHome }}active{{ end }}">All</a>
-            {{ $cats := .Site.Taxonomies.categories }}
-            {{ if not $cats }}{{ $cats = .Site.Taxonomies.category }}{{ end }}
-            {{ range $cats.ByCount }}
-              {{ $termPage := .Page }}
-              <a href="{{ $termPage.RelPermalink }}" class="{{ if and $.IsNode (eq $.RelPermalink $termPage.RelPermalink) }}active{{ end }}">{{ $termPage.Title }}</a>
-            {{ end }}
-          </nav>
         </div>
       </header>
 
       <main class="main-wrap">
-        <div class="glass-well">
-          {{ block "main" . }}{{ end }}
+        <div class="site-layout">
+          <div class="glass-well content-well">
+            {{ block "main" . }}{{ end }}
+          </div>
+          <aside class="glass-well side-well">
+            <p class="side-label">Browse</p>
+            <nav class="category-nav">
+              <a href="{{ .Site.Home.RelPermalink }}" class="{{ if .IsHome }}active{{ end }}">Home</a>
+              {{ $cats := .Site.Taxonomies.categories }}
+              {{ if not $cats }}{{ $cats = .Site.Taxonomies.category }}{{ end }}
+              {{ range $cats.ByCount }}
+                {{ $termPage := .Page }}
+                <a href="{{ $termPage.RelPermalink }}" class="{{ if and $.IsNode (eq $.RelPermalink $termPage.RelPermalink) }}active{{ end }}">
+                  <span>{{ $termPage.Title }}</span>
+                  <em>{{ .Count }}</em>
+                </a>
+              {{ end }}
+            </nav>
+            {{ if .IsHome }}
+              {{ $poems := where .Site.RegularPages "Section" "poems" }}
+              {{ $poems = sort $poems "Date" "desc" }}
+              {{ $scratch := newScratch }}
+              {{ $scratch.Set "featured" nil }}
+              {{ range $poems }}
+                {{ if and (not ($scratch.Get "featured")) .Params.featured }}
+                  {{ $scratch.Set "featured" . }}
+                {{ end }}
+              {{ end }}
+              {{ if and (not ($scratch.Get "featured")) (gt (len $poems) 0) }}
+                {{ $scratch.Set "featured" (index $poems 0) }}
+              {{ end }}
+              {{ with ($scratch.Get "featured") }}
+                {{ $featCat := "" }}
+                {{ with .Params.categories }}{{ $featCat = index . 0 }}{{ else }}{{ with .Params.category }}{{ $featCat = . }}{{ end }}{{ end }}
+                <hr />
+                <section class="featured-poem sidebar-featured">
+                  <div class="featured-head">
+                    <p>Featured Poem</p>
+                    <time>{{ .Date.Format "2 January 2006" }}</time>
+                  </div>
+                  <a href="{{ .RelPermalink }}" class="featured-link">
+                    <h2>{{ .Title }}</h2>
+                    {{ with $featCat }}<span>{{ . }}</span>{{ end }}
+                    <p>{{ if .Summary }}{{ .Summary | plainify | truncate 180 }}{{ else }}{{ .Plain | truncate 180 }}{{ end }}</p>
+                  </a>
+                </section>
+              {{ end }}
+            {{ end }}
+          </aside>
         </div>
       </main>
 
